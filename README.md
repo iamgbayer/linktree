@@ -47,6 +47,8 @@ npx nx build linktree
 
 ## Run e2e tests
 
+You don't need to manually start the application, the e2e tests will start the application and run the tests.
+
 ```sh
 npx nx e2e linktree-e2e
 ```
