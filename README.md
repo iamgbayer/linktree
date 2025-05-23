@@ -25,6 +25,12 @@
 yarn install
 ```
 
+## Copy .env.example to .env and set the environment variables
+
+```sh
+cp .env.example .env
+```
+
 ## Run tasks
 
 To run the dev server for your app, use:
