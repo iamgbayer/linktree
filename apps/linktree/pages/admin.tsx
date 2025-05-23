@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import withAuth from '../src/components/withAuth';
-import { Link as LinkType } from '../types/link';
-import { Category } from '../types/category';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '../src/components/ui/button';
 import { Card, CardContent } from '../src/components/ui/card';
-
 import ProfileCard from '../src/components/admin/ProfileCard';
 import LiveLinkCard from '../src/components/admin/LiveLinkCard';
 import LinkDialog from '../src/components/admin/LinkDialog';
 import LinksTable from '../src/components/admin/LinksTable';
 import { CategoryManager } from '../src/components/categories/CategoryManager';
 import { useLinks } from '../src/hooks/use-links';
-import { categoryService } from '../src/services/category';
-import { validateLinkData, normalizeUrl } from '../src/utils/validation';
+import { useCategories } from '../src/hooks/use-categories';
+import { useLinkDialog } from '../src/hooks/use-link-dialog';
 
 const FIXED_USERNAME = "iamgbayer";
 
@@ -30,79 +27,19 @@ const AdminPage = () => {
     clearError: clearLinksApiError 
   } = useLinks();
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
-  const [categoriesError, setCategoriesError] = useState<string | null>(null);
+  const { categories, isLoadingCategories, categoriesError } = useCategories();
   
-  const [dialogLinkData, setDialogLinkData] = useState<Partial<LinkType & { categoryId?: string | null }>>({ title: '', url: '' });
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [dialogError, setDialogError] = useState<string>('');
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setIsLoadingCategories(true);
-      setCategoriesError(null);
-      try {
-        const fetchedCategories = await categoryService.getCategories();
-        setCategories(fetchedCategories || []);
-      } catch (err) {
-        setCategoriesError(err instanceof Error ? err.message : 'Failed to load categories');
-        setCategories([]);
-      }
-      setIsLoadingCategories(false);
-    };
-    fetchCategories();
-  }, []);
-
-  const handleOpenDialogForEdit = (link: LinkType) => {
-    setEditingId(link.id);
-    setDialogLinkData({ title: link.title, url: link.url, is_visible: link.is_visible, categoryId: link.categoryId });
-    setDialogError('');
-    clearLinksApiError();
-    setIsDialogOpen(true);
-  };
-  
-  const handleOpenDialogForAdd = () => {
-    setEditingId(null);
-    setDialogLinkData({ title: '', url: '', is_visible: true, categoryId: undefined });
-    setDialogError('');
-    clearLinksApiError();
-    setIsDialogOpen(true);
-  }
-
-  const handleDialogSubmit = async () => {
-    clearLinksApiError();
-    const validationResult = validateLinkData(dialogLinkData);
-    if (!validationResult.isValid) {
-      setDialogError(validationResult.error || 'Validation failed');
-      return;
-    }
-    setDialogError('');
-
-    const linkDataToSubmit: { title: string; url: string; is_visible: boolean; categoryId?: string | null } = {
-      title: dialogLinkData.title!,
-      url: normalizeUrl(dialogLinkData.url!),
-      is_visible: dialogLinkData.is_visible ?? true,
-    };
-
-    if (dialogLinkData.categoryId !== undefined) {
-      linkDataToSubmit.categoryId = dialogLinkData.categoryId;
-    }
-
-    let success = false;
-    if (editingId) {
-      success = await updateLink({ id: editingId, ...linkDataToSubmit });
-    } else {
-      success = await addLink(linkDataToSubmit);
-    }
-
-    if (success) {
-      setIsDialogOpen(false);
-      setDialogLinkData({ title: '', url: '', is_visible: true, categoryId: undefined });
-      setEditingId(null);
-    } 
-  };
+  const {
+    isDialogOpen,
+    setIsDialogOpen,
+    dialogLinkData,
+    setDialogLinkData,
+    editingId,
+    dialogError,
+    openDialogForEdit,
+    openDialogForAdd,
+    handleSubmitDialog,
+  } = useLinkDialog({ addLink, updateLink, clearLinksApiError });
 
   const handleDeleteLink = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this link?')) {
@@ -162,7 +99,7 @@ const AdminPage = () => {
             editingId={editingId}
             linkData={dialogLinkData}
             onLinkDataChange={setDialogLinkData}
-            onSubmit={handleDialogSubmit}
+            onSubmit={handleSubmitDialog}
             error={dialogError}
             categories={categories}
           />
@@ -171,9 +108,9 @@ const AdminPage = () => {
           <LinksTable 
             links={links}
             categories={categories}
-            onEditLink={handleOpenDialogForEdit}
+            onEditLink={openDialogForEdit}
             onDeleteLink={handleDeleteLink}
-            onAddNewLink={handleOpenDialogForAdd}
+            onAddNewLink={openDialogForAdd}
           />
 
           <div className="mt-6 text-center">
