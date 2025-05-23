@@ -11,6 +11,7 @@
 ## Scope Decisions and Key Trade-offs
 
 - SSR only on the public profile page, the rest of pages are client side rendered.
+- I assumed that the main experience would be on desktop, but it could be responsive or have a better experience on mobile (I mentioned this on Reflection.md).
 - I focused on the core functionality and easy to use features.
 - I decided to use a simple login system, since this is not a core feature, and it's not the main focus of the project.
 - I thought about having one simple feature to based on each user story,
