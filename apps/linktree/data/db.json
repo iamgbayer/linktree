@@ -1,0 +1,46 @@
+{
+  "iamgbayer": {
+    "links": [
+      {
+        "id": "1",
+        "title": "GitHub",
+        "url": "https://github.com",
+        "is_visible": true,
+        "categoryId": "cat2"
+      },
+      {
+        "id": "2",
+        "title": "LinkedIn",
+        "url": "https://linkedin.com",
+        "is_visible": true
+      },
+      {
+        "id": "1748006303527",
+        "userId": "iamgbayer",
+        "title": "Test Link E2E 1748006297757",
+        "url": "https://test-e2e.com?id=1748006297757",
+        "is_visible": true
+      },
+      {
+        "id": "1748006309490",
+        "userId": "iamgbayer",
+        "title": "Updated Link E2E 1748006306264",
+        "url": "https://updated-e2e.com?id=1748006306264",
+        "is_visible": true
+      },
+      {
+        "id": "1748006318449",
+        "userId": "iamgbayer",
+        "title": "Visibility Test Link 1748006316092",
+        "url": "https://visibility-test.com?id=1748006316092",
+        "is_visible": true
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat2",
+        "name": "Work"
+      }
+    ]
+  }
+}

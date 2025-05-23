@@ -1,0 +1,17 @@
+{
+  "name": "linktree-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/linktree-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/linktree-e2e/cypress.config.ts",
+        "testingType": "e2e"
+      },
+      "dependsOn": []
+    }
+  },
+  "implicitDependencies": ["linktree"]
+} 

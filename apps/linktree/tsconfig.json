@@ -6,7 +6,11 @@
     "emitDeclarationOnly": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,21 +21,33 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "types": ["jest", "node"],
+    "types": [
+      "jest",
+      "node"
+    ],
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "./types",
+      "./utils"
+    ],
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx",
     "../../apps/linktree/.next/types/**/*.ts",
     "../../dist/apps/linktree/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "types/**/*.ts",
+    "utils/**/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "out-tsc",
@@ -42,7 +58,6 @@
     "src/**/*.test.ts",
     ".next",
     "eslint.config.js",
-    "eslint.config.cjs",
-    "eslint.config.mjs"
+    "eslint.config.cjs"
   ]
 }

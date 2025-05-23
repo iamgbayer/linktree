@@ -9,7 +9,11 @@ const { composePlugins, withNx } = require('@nx/next');
 const nextConfig = {
   // Use this to set Nx-specific options
   // See: https://nx.dev/recipes/next/next-config-setup
-  nx: {},
+  nx: {
+    svgr: false
+  },
+  
+  // Configure allowed image domains
 };
 
 const plugins = [

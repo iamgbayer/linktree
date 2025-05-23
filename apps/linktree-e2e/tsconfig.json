@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "moduleResolution": "bundler",
     "outDir": "out-tsc/cypress",
     "allowJs": true,
     "types": ["cypress", "node"],

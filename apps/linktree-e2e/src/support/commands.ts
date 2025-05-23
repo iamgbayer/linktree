@@ -1,35 +1,28 @@
 /// <reference types="cypress" />
 
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
-      login(email: string, password: string): void;
+      login(username?: string, password?: string): void;
     }
   }
 }
 
-// -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+Cypress.Commands.add('login', (username?: string, password?: string) => {
+  const u = username || 'iamgbayer';
+  const p = password || 'g123g';
+
+  cy.session([u, p], () => {
+    cy.visit('/');
+    cy.get('[data-cy="login-username-input"]').type(u);
+    cy.get('[data-cy="login-password-input"]').type(p);
+    cy.get('[data-cy="login-submit-button"]').click();
+    cy.url().should('include', '/admin'); 
+    cy.get('[data-cy="add-new-link-button"]').should('be.visible');
+    cy.window().its('localStorage.isAuthenticated').should('eq', 'true');
+  }, {
+    cacheAcrossSpecs: true
+  });
 });
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+export {};
