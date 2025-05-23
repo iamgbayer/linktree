@@ -43,3 +43,10 @@ npx nx build linktree
 ```sh
 npx nx e2e linktree-e2e
 ```
+
+### Login credentials
+
+It is a hardcoded user for now:
+
+- Username: `iamgbayer`
+- Password: `g123g`
